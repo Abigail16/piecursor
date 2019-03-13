@@ -19,9 +19,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event)
 {
-    qDebug() << event->x();
-    qDebug() << event->y();
-
     mousePosPoint = event->pos();
     update();
 }
@@ -47,5 +44,4 @@ void MainWindow::paintEvent(QPaintEvent *event)
     painter.drawEllipse(mousePosPoint, InnerCircleR, InnerCircleR);
 
     painter.end();
-    qDebug() << "paintEvent";
 }
