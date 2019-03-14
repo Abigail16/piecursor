@@ -1,15 +1,25 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
 #include "QDebug"
 #include "QPainter"
 #include "QMouseEvent"
-#include <QtMath>
+#include "QtMath"
+#include "QTimer"
+#include "QMouseEvent"
+#include "QTime"
+#include "QLabel"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
-{
+{   
     ui->setupUi(this);
+
+    timer = new QTimer(this);  //初始化定时器
+    TimeRecord = new QTime(0, 0, 0); //初始化时间
+    connect(timer,SIGNAL(timeout()),this,SLOT(updateTime()));//关联定时器计满信号和相应的槽函数
+    timer->start(1000);//定时器开始计时，其中1000表示1000ms即1秒
 }
 
 MainWindow::~MainWindow()
@@ -17,18 +27,17 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::updateTime()
+{
+    *TimeRecord = TimeRecord->addSecs(1);
+    qDebug() << TimeRecord->toString("hh:mm:ss");
+}
+
 void MainWindow::mouseMoveEvent(QMouseEvent *event)
 {
-    const int ROUND_DELAY = 10;
-    static int roundCount = 0;
-
     currentMousePosPoint = event->pos();
-
-    if (++roundCount == ROUND_DELAY) {
-        choseToolDirection = calcDirection(lastMousePosPoint, currentMousePosPoint);
-        lastMousePosPoint = currentMousePosPoint;
-        roundCount = 0;
-        qDebug() << choseToolDirection;
+    if (cursor != nullptr) {
+        cursor->onMouseMove(*event);
     }
 
     update();
@@ -39,32 +48,21 @@ void MainWindow::paintEvent(QPaintEvent *)
     QPainter painter;
     painter.begin(this);
 
-    painter.setPen(QPen(Qt::black, 2));
-    painter.setBrush(Qt::white);
-    QPoint boundaryOffset(OuterCircleR, OuterCircleR);
-    QRect boundary(currentMousePosPoint - boundaryOffset, currentMousePosPoint + boundaryOffset);
-    painter.drawEllipse(boundary);
-
-    QVector<QLine> lines;
-    for (int i = 1; i < 8; i += 2) {
-        QPoint offsetValue(static_cast<int>(OuterCircleR * qSin(M_PI_4 * i / 2)),
-                           static_cast<int>(OuterCircleR * qCos(M_PI_4 * i / 2)));
-        lines.append(QLine(currentMousePosPoint + offsetValue,
-                           currentMousePosPoint - offsetValue));
+    if (cursor != nullptr) {
+        cursor->paintBar(painter);
+        cursor->paintCursor(painter, currentMousePosPoint);
     }
-    painter.drawLines(lines);
-
-    painter.setBrush(Qt::red);
-    painter.drawPie(boundary, 5400 - choseToolDirection * 720, 720);
-
-    painter.setCompositionMode(QPainter::CompositionMode_Clear);
-    painter.drawEllipse(currentMousePosPoint, InnerCircleR, InnerCircleR);
 
     painter.end();
 }
 
-MainWindow::Direction MainWindow::calcDirection(QPoint last, QPoint current)
+void MainWindow::mousePressEvent(QMouseEvent *)
 {
-    QPoint offset = current - last;
-    return static_cast<MainWindow::Direction>((static_cast<int>(qAtan2(offset.y(), offset.x()) / (M_PI_4 / 2)) + 17) % 16 / 2);
+    timer->stop();
 }
+
+void MainWindow::mouseReleaseEvent(QMouseEvent *)
+{
+    timer->start();
+}
+

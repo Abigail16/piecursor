@@ -26,10 +26,19 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    toolbar.cpp \
+    piecursor.cpp \
+    bigwheel.cpp \
+    mathutils.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    cursor.h \
+    toolbar.h \
+    piecursor.h \
+    bigwheel.h \
+    mathutils.h
 
 FORMS += \
         mainwindow.ui

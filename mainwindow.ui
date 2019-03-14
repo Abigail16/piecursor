@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>683</width>
-    <height>384</height>
+    <width>1920</width>
+    <height>1200</height>
    </rect>
   </property>
   <property name="mouseTracking">
@@ -20,14 +20,92 @@
    <property name="mouseTracking">
     <bool>true</bool>
    </property>
+   <widget class="QPushButton" name="Toolbar_4">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>120</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Toolbar-4</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Toolbar_8">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>10</y>
+      <width>120</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Toolbar-8</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="PieCursor_8">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>40</y>
+      <width>120</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PieCursor-8</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="PieCursor_4">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>120</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PieCursor-4</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="BigWheel_8">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>70</y>
+      <width>120</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>BigWheel-8</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="BigWheel_4">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>70</y>
+      <width>120</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>BigWheel-4</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>683</width>
-     <height>22</height>
+     <width>1920</width>
+     <height>25</height>
     </rect>
    </property>
   </widget>
