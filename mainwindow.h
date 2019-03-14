@@ -14,12 +14,17 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    virtual void mouseMoveEvent(QMouseEvent *event);
-    virtual void paintEvent(QPaintEvent *event);
+    virtual void mouseMoveEvent(QMouseEvent *);
+    virtual void paintEvent(QPaintEvent *);
 
 private:
     Ui::MainWindow *ui;
-    QPoint mousePosPoint;
+    QPoint lastMousePosPoint;
+    QPoint currentMousePosPoint;
+
+    enum Direction {Right, LowerRight, Lower, LowerLeft, Left, UpperLeft, Upper, UpperRight} choseToolDirection;
+
+    Direction calcDirection(QPoint last, QPoint current);
 
     const int OuterCircleR = 60;
     const int InnerCircleR = 35;
