@@ -12,17 +12,19 @@ PieCursor::PieCursor(Cursor::IconNumberEnum e) : Cursor(e)
 
 
 void PieCursor::paintCursor(QPainter &painter, const QPoint &point) {
+    int radius = size / 2;
+
     painter.setPen(QPen(Qt::black, 1));
     painter.setBrush(Qt::white);
-    QPoint boundaryOffset(size / 2, size / 2);
+    QPoint boundaryOffset(radius, radius);
     QRect boundary(point - boundaryOffset, point + boundaryOffset);
     painter.drawEllipse(boundary);
 
     QVector<QLine> lines;
     for (int i = 8 / iconNumber; i < 8; i += 16 / iconNumber) {
 
-        QPoint offsetValue(static_cast<int>(size * qSin(M_PI_4 * i / 2) / 2),
-                           static_cast<int>(size * qCos(M_PI_4 * i / 2) / 2));
+        QPoint offsetValue(static_cast<int>(radius * qSin(M_PI_4 * i / 2)),
+                           static_cast<int>(radius * qCos(M_PI_4 * i / 2)));
         lines.append(QLine(point + offsetValue,
                            point - offsetValue));
     }
@@ -33,7 +35,7 @@ void PieCursor::paintCursor(QPainter &painter, const QPoint &point) {
     painter.drawPie(boundary, 5760 - 2880 / iconNumber - choseToolDirection * 5760 / iconNumber, 5760 / iconNumber);
 
     painter.setBrush(Qt::black);//黑点
-    painter.drawEllipse(point.x() + (size/2+8), point.y(), 5, 5);
+    painter.drawEllipse(MathUtils::calcPointByDirection(point, radius + 8, iconNumber, choseToolDirection), 3, 3);
 
 }
 
