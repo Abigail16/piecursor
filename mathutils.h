@@ -7,7 +7,8 @@ class MathUtils
 private:
     MathUtils() {}
 public:
-    static int calcDirection(const QPoint &x, const QPoint &y, int DirectionNumber);
+    static int calcDirection(const QPoint &x, const QPoint &y, int directionNumber);
+    static QPoint calcPointByDirection(const QPoint &center, int radius, int directionNumber, int direction);
 };
 
 #endif // MATHUTILS_H
