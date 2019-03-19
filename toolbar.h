@@ -13,7 +13,7 @@ public:
     virtual ~ToolBar() {}
     virtual void paintBar(QPainter&);
     virtual void paintCursor(QPainter&, const QPoint&) {}
-    virtual void onMouseMove(const QMouseEvent&) {}
+    virtual void onMouseMove(const QMouseEvent&);
 };
 
 #endif // TOOLBAR_H
