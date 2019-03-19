@@ -10,16 +10,15 @@
 #include "QTime"
 #include "QLabel"
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
-{   
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
+                                          ui(new Ui::MainWindow)
+{
     ui->setupUi(this);
 
-    timer = new QTimer(this);  //初始化定时器
-    TimeRecord = new QTime(0, 0, 0); //初始化时间
-    connect(timer,SIGNAL(timeout()),this,SLOT(updateTime()));//关联定时器计满信号和相应的槽函数
-    timer->start(1000);//定时器开始计时，其中1000表示1000ms即1秒
+    setFixedSize(960, 600);                                      //设置窗口大小
+    timer = new QTimer(this);                                    //初始化定时器
+    TimeRecord = new QTime(0, 0, 0, 0);                          //初始化时间
+    connect(timer, SIGNAL(timeout()), this, SLOT(updateTime())); //关联定时器计满信号和相应的槽函数
 }
 
 MainWindow::~MainWindow()
@@ -29,14 +28,15 @@ MainWindow::~MainWindow()
 
 void MainWindow::updateTime()
 {
-    *TimeRecord = TimeRecord->addSecs(1);
-    qDebug() << TimeRecord->toString("hh:mm:ss");
+    *TimeRecord = TimeRecord->addMSecs(1);
+    qDebug() << TimeRecord->toString("hh:mm:ss:zzz");
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event)
 {
     currentMousePosPoint = event->pos();
-    if (cursor != nullptr) {
+    if (cursor != nullptr)
+    {
         cursor->onMouseMove(*event);
     }
 
@@ -48,7 +48,26 @@ void MainWindow::paintEvent(QPaintEvent *)
     QPainter painter;
     painter.begin(this);
 
-    if (cursor != nullptr) {
+    QBrush brush1(QColor(211, 211, 211), Qt::SolidPattern); // 画刷
+    painter.setBrush(brush1);                               // 设置画刷
+    painter.drawRect(180, 150, 600, 300);
+
+    QBrush brush2(QColor(169, 169, 169), Qt::SolidPattern); // 画刷
+    painter.setBrush(brush2);                               // 设置画刷
+    painter.drawRect(455, 275, 50, 50);
+
+    QBrush brush3(QColor(255, 255, 255), Qt::SolidPattern); // 画刷
+    painter.setBrush(brush3);                               // 设置画刷
+    painter.drawRect(478, 298, 4, 4);
+
+    QVector<QLine> lines; //距离50个像素的线
+    QPoint offset1(0, 500);
+    QPoint offset2(960, 500);
+    lines.append(QLine(offset1, offset2));
+    painter.drawLines(lines);
+
+    if (cursor != nullptr)
+    {
         cursor->paintBar(painter);
         cursor->paintCursor(painter, currentMousePosPoint);
     }
@@ -58,11 +77,10 @@ void MainWindow::paintEvent(QPaintEvent *)
 
 void MainWindow::mousePressEvent(QMouseEvent *)
 {
-    timer->stop();
+    timer->start(1); //定时器开始计时，其中1000表示1000ms即1秒
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *)
 {
-    timer->start();
+    timer->stop();
 }
-

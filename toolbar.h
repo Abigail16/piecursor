@@ -2,9 +2,12 @@
 #define TOOLBAR_H
 
 #include "cursor.h"
+#include "QPoint"
 
 class ToolBar : public Cursor
 {
+private:
+    QPoint currentMousePosPoint;
 public:
     ToolBar(Cursor::IconNumberEnum);
     virtual ~ToolBar() {}

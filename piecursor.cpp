@@ -12,7 +12,7 @@ PieCursor::PieCursor(Cursor::IconNumberEnum e) : Cursor(e)
 
 
 void PieCursor::paintCursor(QPainter &painter, const QPoint &point) {
-    painter.setPen(QPen(Qt::black, 2));
+    painter.setPen(QPen(Qt::black, 1));
     painter.setBrush(Qt::white);
     QPoint boundaryOffset(size / 2, size / 2);
     QRect boundary(point - boundaryOffset, point + boundaryOffset);
@@ -28,8 +28,13 @@ void PieCursor::paintCursor(QPainter &painter, const QPoint &point) {
     }
     painter.drawLines(lines);
 
-    painter.setBrush(Qt::red);
+    const Qt::GlobalColor pieBrushColors[] = {Qt::red, Qt::yellow, Qt::blue, Qt::green, Qt::darkGray, Qt::magenta, Qt::cyan, Qt::black};
+    painter.setBrush(pieBrushColors[choseToolDirection]);//扇形
     painter.drawPie(boundary, 5760 - 2880 / iconNumber - choseToolDirection * 5760 / iconNumber, 5760 / iconNumber);
+
+    painter.setBrush(Qt::black);//黑点
+    painter.drawEllipse(point.x() + (size/2+8), point.y(), 5, 5);
+
 }
 
 void PieCursor::onMouseMove(const QMouseEvent &event) {

@@ -7,7 +7,7 @@
 class PieCursor : public Cursor
 {
 private:
-    const int ROUND_DELAY = 3;
+    const int ROUND_DELAY = 5;
     QPoint lastMousePosPoint;
     QPoint currentMousePosPoint;
     int choseToolDirection = 0;
