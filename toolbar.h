@@ -14,6 +14,8 @@ public:
     virtual void paintBar(QPainter&);
     virtual void paintCursor(QPainter&, const QPoint&) {}
     virtual void onMouseMove(const QMouseEvent&);
+    //virtual void dragEvent(const QMouseEvent&) {}
+    virtual int cursorType(){return 1;}
 };
 
 #endif // TOOLBAR_H

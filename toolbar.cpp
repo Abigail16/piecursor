@@ -18,6 +18,10 @@ void ToolBar::paintBar(QPainter &painter) {
         if(rect.contains(currentMousePosPoint)) {
             painter.setBrush(pieBrushColors[i]);
             painter.drawRect(rect);
+
+            painter.setBrush(Qt::black);//黑点
+            painter.drawEllipse(upperLeftPoint.x()+size/2-2, upperLeftPoint.y()+size+6, 4, 4);
+
         }
         else {
             rects.append(rect);
@@ -29,8 +33,8 @@ void ToolBar::paintBar(QPainter &painter) {
     painter.setPen(QPen(Qt::black, 1));
     painter.setBrush(Qt::white);
     painter.drawRects(rects);
-
 }
+
 
 void ToolBar::onMouseMove(const QMouseEvent &event) {
     currentMousePosPoint = event.pos();
