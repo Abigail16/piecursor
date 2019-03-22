@@ -26,13 +26,13 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::updateTime()
+void MainWindow::updateTime()//更新时间
 {
     *TimeRecord = TimeRecord->addMSecs(1);
-    qDebug() << TimeRecord->toString("hh:mm:ss:zzz");
+    //qDebug() << TimeRecord->toString("hh:mm:ss:zzz");//显示时间
 }
 
-void MainWindow::mouseMoveEvent(QMouseEvent *event)
+void MainWindow::mouseMoveEvent(QMouseEvent *event)//鼠标移动触发
 {
     currentMousePosPoint = event->pos();
     if (cursor != nullptr)
@@ -47,7 +47,7 @@ void MainWindow::paintEvent(QPaintEvent *)
 {
     QPainter painter;
     painter.begin(this);
-
+//画的 新变成一个类
     QBrush brush1(QColor(211, 211, 211), Qt::SolidPattern); // 画刷
     painter.setBrush(brush1);                               // 设置画刷
     painter.drawRect(180, 150, 600, 300);
@@ -58,7 +58,7 @@ void MainWindow::paintEvent(QPaintEvent *)
 
     QBrush brush3(QColor(255, 255, 255), Qt::SolidPattern); // 画刷
     painter.setBrush(brush3);                               // 设置画刷
-    painter.drawRect(478, 298, 4, 4);
+    painter.drawRect(476, 296, 8, 8);
 
     QVector<QLine> lines; //距离50个像素的线
     QPoint offset1(0, 500);
@@ -66,21 +66,82 @@ void MainWindow::paintEvent(QPaintEvent *)
     lines.append(QLine(offset1, offset2));
     painter.drawLines(lines);
 
-    if (cursor != nullptr)
+    if (cursor != nullptr && !cursor->drag)
     {
         cursor->paintBar(painter);
         cursor->paintCursor(painter, currentMousePosPoint);
+    }
+    else if (cursor != nullptr && cursor->drag)
+    {
+        cursor->dragEvent(painter, currentMousePosPoint);
     }
 
     painter.end();
 }
 
-void MainWindow::mousePressEvent(QMouseEvent *)
+void MainWindow::mousePressEvent(QMouseEvent *)//鼠标点击触发
 {
+    //拖动实现
+    QRect rectBig(180, 150, 600, 300);
+    QRect rectMid(455, 275, 50, 50);
+    QRect rectSmall(476, 296, 8, 8);
+    if (cursor != nullptr)
+    {
+        cursor->drag = true;
+        setCursor(Qt::ClosedHandCursor);
+        if(rectSmall.contains(currentMousePosPoint))
+        {
+            cursor->getType = 1;
+        }
+        else if(rectMid.contains(currentMousePosPoint))
+        {
+            cursor->getType = 2;
+        }
+        else if(rectBig.contains(currentMousePosPoint))
+        {
+            cursor->getType = 3;
+        }
+    }
     timer->start(1); //定时器开始计时，其中1000表示1000ms即1秒
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *)
 {
+    if(currentMousePosPoint.y()>500)
+    {
+       // TimeRecord = new QTime(0, 0, 0, 0);//时间重置
+        if(cursor != nullptr)
+        {
+            cursor->drag = false;
+            if(cursor->cursorType() == 2)
+            {
+                setCursor(Qt::BlankCursor);
+            }
+            else
+            {
+                setCursor(Qt::ArrowCursor);
+            }
+        }
+    }
+    else
+    {
+        //回归原位
+    }
     timer->stop();
+}
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Shift && cursor->cursorType() == 2)
+    {
+        //不画了
+        setCursor(Qt::ArrowCursor);
+    }
+}
+
+void MainWindow::keyReleaseEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Shift && cursor->cursorType() == 2)
+    {
+        //继续画
+    }
 }

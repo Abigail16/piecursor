@@ -20,7 +20,7 @@ void PieCursor::paintCursor(QPainter &painter, const QPoint &point) {
     QRect boundary(point - boundaryOffset, point + boundaryOffset);
     painter.drawEllipse(boundary);
 
-    QVector<QLine> lines;
+    QVector<QLine> lines;//画圆
     for (int i = 8 / iconNumber; i < 8; i += 16 / iconNumber) {
 
         QPoint offsetValue(static_cast<int>(radius * qSin(M_PI_4 * i / 2)),
@@ -39,12 +39,33 @@ void PieCursor::paintCursor(QPainter &painter, const QPoint &point) {
 
 }
 
-void PieCursor::onMouseMove(const QMouseEvent &event) {
+void PieCursor::onMouseMove(const QMouseEvent &event) {//计算在哪一块
     currentMousePosPoint = event.pos();
     if (++roundCount == ROUND_DELAY) {
         choseToolDirection = MathUtils::calcDirection(lastMousePosPoint, currentMousePosPoint, iconNumber);
         lastMousePosPoint = currentMousePosPoint;
         roundCount = 0;
-        qDebug() << choseToolDirection;
+        //qDebug() << choseToolDirection;
+    }
+}
+void PieCursor::dragEvent(QPainter &painter, const QPoint &point)
+{
+    if(getType == 1)
+    {
+        QBrush brush3(QColor(255, 255, 255), Qt::SolidPattern); // 画刷
+        painter.setBrush(brush3);                               // 设置画刷
+        painter.drawRect(point.x(), point.y(), 8, 8);
+    }
+    if(getType == 2)
+    {
+        QBrush brush2(QColor(169, 169, 169), Qt::SolidPattern); // 画刷
+        painter.setBrush(brush2);                               // 设置画刷
+        painter.drawRect(point.x(), point.y(), 50, 50);
+    }
+    if(getType == 3)
+    {
+        QBrush brush3(QColor(211, 211, 211), Qt::SolidPattern); // 画刷
+        painter.setBrush(brush3);                               // 设置画刷
+        painter.drawRect(point.x(), point.y(), 600, 300);
     }
 }

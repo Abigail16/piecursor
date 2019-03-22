@@ -9,6 +9,7 @@ public:
     BigWheel(Cursor::IconNumberEnum);
 
     virtual ~BigWheel() {}
+    virtual int cursorType(){return 3;}
 };
 
 #endif // BIGWHEEL_H
