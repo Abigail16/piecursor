@@ -4,18 +4,20 @@
 class QPainter;
 class QPoint;
 class QMouseEvent;
-class Cursor
-{
+class Cursor {
 protected:
-    const int SMALL_SIZE = 32;//像素大小
+    const int SMALL_SIZE = 32; //像素大小
     const int BIG_SIZE = 128;
     int iconNumber;
     int size;
+
 public:
-    enum IconNumberEnum{Four, Eight};//功能数量
-    bool drag = false;
-    int getType = 0;
-    Cursor(IconNumberEnum e) {
+    enum IconNumberEnum { Four,
+        Eight }; //功能数量
+    bool isDragging = false;
+    int draggingRectType = 0;
+    Cursor(IconNumberEnum e)
+    {
         switch (e) {
         case IconNumberEnum::Four:
             iconNumber = 4;
@@ -30,8 +32,7 @@ public:
     virtual void paintBar(QPainter&) {}
     virtual void paintCursor(QPainter&, const QPoint&) {}
     virtual void onMouseMove(const QMouseEvent&) {}
-    virtual void dragEvent(QPainter&, const QPoint&) {}
-    virtual int cursorType(){return 0;}
+    virtual int cursorType() = 0;
 };
 
 #endif // CURSOR_H
