@@ -85,7 +85,7 @@ void MainWindow::paintEvent(QPaintEvent*)
     this->paintRects(painter);
     if (cursor != nullptr) {
         cursor->paintBar(painter);
-        if (!cursor->isDragging) {
+        if (!cursor->isDragging && !cursor->isShiftPressed) {
             cursor->paintCursor(painter, currentMousePosPoint);
         }
     }
@@ -141,15 +141,19 @@ void MainWindow::mouseReleaseEvent(QMouseEvent* event)
 
 void MainWindow::keyPressEvent(QKeyEvent* event)
 {
-    if (event->key() == Qt::Key_Shift && cursor->cursorType() == 2) {
+    if (event->key() == Qt::Key_Shift && cursor != nullptr && cursor->cursorType() == 2) {
         //不画了
+        cursor->isShiftPressed = true;
         setCursor(Qt::ArrowCursor);
+        update();
     }
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent* event)
 {
-    if (event->key() == Qt::Key_Shift && cursor->cursorType() == 2) {
-        //继续画
+    if (event->key() == Qt::Key_Shift && cursor != nullptr && cursor->cursorType() == 2) {
+        cursor->isShiftPressed = false;
+        setCursor(Qt::BlankCursor);
+        update();
     }
 }

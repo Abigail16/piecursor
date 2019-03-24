@@ -15,6 +15,7 @@ public:
     enum IconNumberEnum { Four,
         Eight }; //功能数量
     bool isDragging = false;
+    bool isShiftPressed = false;
     int draggingRectType = 0;
     Cursor(IconNumberEnum e)
     {
