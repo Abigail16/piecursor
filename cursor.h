@@ -32,6 +32,7 @@ public:
     virtual void paintBar(QPainter&) {}
     virtual void paintCursor(QPainter&, const QPoint&) {}
     virtual void onMouseMove(const QMouseEvent&) {}
+    virtual void onMouseClick(const QMouseEvent&) {}
     virtual int cursorType() = 0;
 };
 

@@ -41,7 +41,6 @@ void PieCursor::paintCursor(QPainter& painter, const QPoint& point)
 
 void PieCursor::onMouseMove(const QMouseEvent& event)
 { //计算在哪一块
-    Cursor::onMouseMove(event);
     currentMousePosPoint = event.pos();
     if (++roundCount == ROUND_DELAY) {
         choseToolDirection = MathUtils::calcDirection(lastMousePosPoint, currentMousePosPoint, iconNumber);

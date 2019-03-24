@@ -75,7 +75,6 @@ void MainWindow::paintEvent(QPaintEvent*)
 {
     QPainter painter;
     painter.begin(this);
-    //画的 新变成一个类
 
     QVector<QLine> lines; //距离50个像素的线
     QPoint offset1(0, 500);
@@ -93,19 +92,22 @@ void MainWindow::paintEvent(QPaintEvent*)
     painter.end();
 }
 
-void MainWindow::mousePressEvent(QMouseEvent*) //鼠标点击触发
+void MainWindow::mousePressEvent(QMouseEvent* event) //鼠标点击触发
 {
     //拖动实现
+    QPoint pos = event->pos();
     if (cursor != nullptr) {
-        if (QRect(Rect3PosPoint, QSize(8, 8)).contains(currentMousePosPoint)) {
+        cursor->onMouseClick(*event);
+
+        if (QRect(Rect3PosPoint, QSize(8, 8)).contains(pos)) {
             setCursor(Qt::ClosedHandCursor);
             cursor->isDragging = true;
             cursor->draggingRectType = 3;
-        } else if (QRect(Rect2PosPoint, QSize(50, 50)).contains(currentMousePosPoint)) {
+        } else if (QRect(Rect2PosPoint, QSize(50, 50)).contains(pos)) {
             setCursor(Qt::ClosedHandCursor);
             cursor->isDragging = true;
             cursor->draggingRectType = 2;
-        } else if (QRect(Rect1PosPoint, QSize(600, 300)).contains(currentMousePosPoint)) {
+        } else if (QRect(Rect1PosPoint, QSize(600, 300)).contains(pos)) {
             setCursor(Qt::ClosedHandCursor);
             cursor->isDragging = true;
             cursor->draggingRectType = 1;
@@ -114,7 +116,7 @@ void MainWindow::mousePressEvent(QMouseEvent*) //鼠标点击触发
     timer->start(1); //定时器开始计时，其中1000表示1000ms即1秒
 }
 
-void MainWindow::mouseReleaseEvent(QMouseEvent*)
+void MainWindow::mouseReleaseEvent(QMouseEvent* event)
 {
     if (cursor != nullptr) {
         if (cursor->isDragging) {
@@ -125,7 +127,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent*)
                 setCursor(Qt::ArrowCursor);
             }
 
-            if (currentMousePosPoint.y() > 500) {
+            if (event->y() > 500) {
                 // TimeRecord = new QTime(0, 0, 0, 0);//时间重置
                 Rect1PosPoint = QPoint(180, 150);
                 Rect2PosPoint = QPoint(455, 275);
