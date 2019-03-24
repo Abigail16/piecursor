@@ -112,6 +112,7 @@ void MainWindow::mousePressEvent(QMouseEvent* event) //鼠标点击触发
             cursor->isDragging = true;
             cursor->draggingRectType = 1;
         }
+        update();
     }
     timer->start(1); //定时器开始计时，其中1000表示1000ms即1秒
 }
@@ -122,7 +123,12 @@ void MainWindow::mouseReleaseEvent(QMouseEvent* event)
         if (cursor->isDragging) {
             cursor->isDragging = false;
             if (cursor->cursorType() == 2) {
-                setCursor(Qt::BlankCursor);
+                if (cursor->isShiftPressed) {
+                    setCursor(Qt::ArrowCursor);
+                } else {
+                    setCursor(Qt::BlankCursor);
+                }
+
             } else {
                 setCursor(Qt::ArrowCursor);
             }
@@ -132,8 +138,8 @@ void MainWindow::mouseReleaseEvent(QMouseEvent* event)
                 Rect1PosPoint = QPoint(180, 150);
                 Rect2PosPoint = QPoint(455, 275);
                 Rect3PosPoint = QPoint(476, 296);
-                update();
             }
+            update();
             timer->stop();
         }
     }
@@ -144,7 +150,9 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
     if (event->key() == Qt::Key_Shift && cursor != nullptr && cursor->cursorType() == 2) {
         //不画了
         cursor->isShiftPressed = true;
-        setCursor(Qt::ArrowCursor);
+        if (!cursor->isDragging) {
+            setCursor(Qt::ArrowCursor);
+        }
         update();
     }
 }
@@ -153,7 +161,9 @@ void MainWindow::keyReleaseEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Shift && cursor != nullptr && cursor->cursorType() == 2) {
         cursor->isShiftPressed = false;
-        setCursor(Qt::BlankCursor);
+        if (!cursor->isDragging) {
+            setCursor(Qt::BlankCursor);
+        }
         update();
     }
 }
