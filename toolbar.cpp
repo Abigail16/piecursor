@@ -1,6 +1,7 @@
 #include "toolbar.h"
 #include "QMouseEvent"
 #include "QPainter"
+#include "mathutils.h"
 
 ToolBar::ToolBar(Cursor::IconNumberEnum e)//初始矩形
     : Cursor(e)
