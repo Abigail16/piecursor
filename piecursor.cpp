@@ -20,7 +20,6 @@ void PieCursor::paintCursor(QPainter& painter, const QPoint& point)
     QPoint boundaryOffset(radius, radius);
     QRect boundary(point - boundaryOffset, point + boundaryOffset);
     painter.drawEllipse(boundary);
-
     QVector<QLine> lines; //画圆
     for (int i = 8 / iconNumber; i < 8; i += 16 / iconNumber) {
 
