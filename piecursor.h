@@ -9,7 +9,6 @@ private:
     const int ROUND_DELAY = 5; //鼠标捕捉周期
     QPoint lastMousePosPoint;
     QPoint currentMousePosPoint;
-    int choseToolDirection = 0;
     int roundCount = 0;
 
 public:

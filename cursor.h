@@ -10,6 +10,7 @@ protected:
     const int BIG_SIZE = 128;
     int iconNumber;
     int size;
+    int choseToolDirection = -1;
 
 public:
     enum IconNumberEnum { Four,
@@ -17,6 +18,9 @@ public:
     bool isDragging = false;
     bool isShiftPressed = false;
     int draggingRectType = 0;
+    int targetSize;
+    int getChoseToolIndex() { return choseToolDirection; }
+
     Cursor(IconNumberEnum e)
     {
         switch (e) {

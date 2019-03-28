@@ -9,7 +9,6 @@
 class ToolBar : public Cursor {
 private:
     QPoint currentMousePosPoint;
-    int selectedIndex = -1;
     QVector<QRect> rects;
     QPoint upperLeftPoint;
     const Qt::GlobalColor pieBrushColors[8] = { Qt::red, Qt::yellow, Qt::blue, Qt::green, Qt::darkGray, Qt::magenta, Qt::cyan, Qt::black };
