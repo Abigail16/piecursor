@@ -20,7 +20,6 @@ void PieCursor::paintCursor(QPainter& painter, const QPoint& point)
     QPoint boundaryOffset(radius, radius);
     QRect boundary(point - boundaryOffset, point + boundaryOffset);
     painter.drawEllipse(boundary);
-
     QVector<QLine> lines; //画圆
     for (int i = 8 / iconNumber; i < 8; i += 16 / iconNumber) {
 
@@ -32,11 +31,13 @@ void PieCursor::paintCursor(QPainter& painter, const QPoint& point)
     painter.drawLines(lines);
 
     const Qt::GlobalColor pieBrushColors[] = { Qt::red, Qt::yellow, Qt::blue, Qt::green, Qt::darkGray, Qt::magenta, Qt::cyan, Qt::black };
-    painter.setBrush(pieBrushColors[choseToolDirection]); //扇形
-    painter.drawPie(boundary, 5760 - 2880 / iconNumber - choseToolDirection * 5760 / iconNumber, 5760 / iconNumber);
+    if (choseToolDirection >= 0) {
+        painter.setBrush(pieBrushColors[choseToolDirection]); //扇形
+        painter.drawPie(boundary, 5760 - 2880 / iconNumber - choseToolDirection * 5760 / iconNumber, 5760 / iconNumber);
 
-    painter.setBrush(Qt::black); //黑点
-    painter.drawEllipse(MathUtils::calcPointByDirection(point, radius + 8, iconNumber, choseToolDirection), 3, 3);
+        painter.setBrush(Qt::black); //黑点
+        painter.drawEllipse(MathUtils::calcPointByDirection(point, radius + 8, iconNumber, choseToolDirection), 3, 3);
+    }
 }
 
 void PieCursor::onMouseMove(const QMouseEvent& event)
