@@ -18,7 +18,6 @@ public:
     bool isDragging = false;
     bool isShiftPressed = false;
     int draggingRectType = 0;
-    int targetSize;
     int getChoseToolIndex() { return choseToolDirection; }
 
     Cursor(IconNumberEnum e)

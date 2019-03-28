@@ -31,6 +31,7 @@ private:
 
     Cursor* cursor = nullptr; //鼠标选择
     int iconNumber; //哪一块
+    int targetSize;
 
     QTimer* timer; //计时
     QTime* TimeRecord;
