@@ -134,21 +134,24 @@ void MainWindow::mousePressEvent(QMouseEvent* event) //鼠标点击触发
             ui->Feature_Label->setText("当前功能" + QString::number(cursor->getChoseToolIndex()));
             cursor->currentFeature = cursor->getChoseToolIndex();
         }
-        timer->start(1); //定时器开始计时，其中1000表示1000ms即1秒
 
-        if (QRect(Rect3PosPoint, QSize(8, 8)).contains(pos) && cursor->getTargetIndex() == 0) { //选择功能
-            setCursor(Qt::ClosedHandCursor);
-            cursor->isDragging = true;
-            cursor->draggingRectType = 3;
-        } else if (QRect(Rect2PosPoint, QSize(50, 50)).contains(pos) && cursor->getTargetIndex() == 1) {
-            setCursor(Qt::ClosedHandCursor);
-            cursor->isDragging = true;
-            cursor->draggingRectType = 2;
-        } else if (QRect(Rect1PosPoint, QSize(600, 300)).contains(pos) && cursor->getTargetIndex() == 2) {
-            setCursor(Qt::ClosedHandCursor);
-            cursor->isDragging = true;
-            cursor->draggingRectType = 1;
+        timer->start(1); //定时器开始计时，其中1000表示1000ms即1秒
+        if (cursor->currentFeature == cursor->getIconIndex()) {
+            if (QRect(Rect3PosPoint, QSize(8, 8)).contains(pos) && cursor->getTargetIndex() == 0) { //选择功能
+                setCursor(Qt::ClosedHandCursor);
+                cursor->isDragging = true;
+                cursor->draggingRectType = 3;
+            } else if (QRect(Rect2PosPoint, QSize(50, 50)).contains(pos) && cursor->getTargetIndex() == 1) {
+                setCursor(Qt::ClosedHandCursor);
+                cursor->isDragging = true;
+                cursor->draggingRectType = 2;
+            } else if (QRect(Rect1PosPoint, QSize(600, 300)).contains(pos) && cursor->getTargetIndex() == 2) {
+                setCursor(Qt::ClosedHandCursor);
+                cursor->isDragging = true;
+                cursor->draggingRectType = 1;
+            }
         }
+
         update();
     }
 }
@@ -169,16 +172,14 @@ void MainWindow::mouseReleaseEvent(QMouseEvent* event)
                 setCursor(Qt::ArrowCursor);
             }
 
-            if (event->y() > 500) { //松开时完成功能
+            if (Rect1PosPoint.y() > 500 || Rect2PosPoint.y() > 500 || Rect3PosPoint.y() > 500) { //松开时完成功能
                 Rect1PosPoint = QPoint(180, 150); //重置
                 Rect2PosPoint = QPoint(455, 275);
                 Rect3PosPoint = QPoint(476, 296);
-                if (cursor->currentFeature == cursor->getIconIndex()) {
-                    qDebug() << TimeRecord->elapsed();
-                    TimeRecord->restart();
-                    cursor->incrTaskIndex();
-                    ui->NeedFeature->setText("需求功能" + QString::number(cursor->getIconIndex()));
-                }
+                qDebug() << TimeRecord->elapsed();
+                TimeRecord->restart();
+                cursor->incrTaskIndex();
+                ui->NeedFeature->setText("需求功能" + QString::number(cursor->getIconIndex()));
             }
             update();
         }
