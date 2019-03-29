@@ -1,6 +1,10 @@
 #ifndef CURSOR_H
 #define CURSOR_H
 
+#include "mathutils.h"
+
+#include <QVector>
+
 class QPainter;
 class QPoint;
 class QMouseEvent;
@@ -11,6 +15,7 @@ protected:
     int iconNumber;
     int size;
     int choseToolDirection = -1;
+    int taskIndex = 0;
 
 public:
     enum IconNumberEnum { Four,
@@ -18,8 +23,9 @@ public:
     bool isDragging = false;
     bool isShiftPressed = false;
     int draggingRectType = 0;
-    int targetSize;
     int getChoseToolIndex() { return choseToolDirection; }
+
+    QVector<int> randVector;
 
     Cursor(IconNumberEnum e)
     {
@@ -31,6 +37,25 @@ public:
             iconNumber = 8;
             break;
         }
+        randVector = MathUtils::genRandVector(iconNumber, 3);
+    }
+
+    int currentFeature = -1;
+
+    int getIconIndex()
+    {
+        return randVector.at(taskIndex) % iconNumber;
+    }
+
+    int getTargetIndex()
+    {
+        return randVector.at(taskIndex) / iconNumber;
+    }
+
+    int incrTaskIndex()
+    {
+        taskIndex = (taskIndex + 1) % (iconNumber * 3);
+        return taskIndex;
     }
 
     virtual ~Cursor() {}
